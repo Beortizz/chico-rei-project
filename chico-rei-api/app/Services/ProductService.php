@@ -16,4 +16,9 @@ class ProductService
         $product->update($data);
         return $product;
     }
+
+    public function delete(Product $product): void
+    {
+        $product->delete();
+    }
 }

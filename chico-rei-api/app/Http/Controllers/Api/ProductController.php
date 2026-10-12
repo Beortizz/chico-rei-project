@@ -12,11 +12,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private $productService;
-    public function __construct()
+    public function __construct(private readonly ProductService $productService)
     {
-        $this->productService = new ProductService();
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,9 +30,9 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $prodcut = $this->productService->create($request->validated());
+        $product = $this->productService->create($request->validated());
 
-        return response()->json(new ProductResource($prodcut), 201);
+        return response()->json(new ProductResource($product), 201);
     }
 
     /**
@@ -41,7 +40,9 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return response()->json(new ProductResource($product), 200);
     }
 
     /**
@@ -59,6 +60,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $this->productService->delete($product);
+
+        return response()->noContent();
     }
 }
