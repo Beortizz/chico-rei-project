@@ -39,7 +39,7 @@ class ProductController extends Controller
     {
         $product = $this->productService->create($request->validated());
 
-        return response()->json(new ProductResource($product), 201);
+        return (new ProductResource($product))->response()->setStatusCode(201);
     }
 
     /**
@@ -49,7 +49,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return response()->json(new ProductResource($product), 200);
+        return new ProductResource($product);
     }
 
     /**
@@ -59,7 +59,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product = $this->productService->update($product, $request->validated());
-        return response()->json(new ProductResource($product), 200);
+        return new ProductResource($product);
     }
 
     /**
