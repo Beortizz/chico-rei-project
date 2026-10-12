@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Filters\ProductFilter;
+use App\Http\Requests\ListProductsRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -19,10 +21,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ListProductsRequest $request)
     {
-        $products = Product::all();
-        return response()->json($products);
+        $filter = new ProductFilter($request->validated());
+
+        $products = $filter->apply(Product::query())
+            ->paginate($request->integer('per_page', 15))
+            ->withQueryString();
+
+        return ProductResource::collection($products);
     }
 
     /**
