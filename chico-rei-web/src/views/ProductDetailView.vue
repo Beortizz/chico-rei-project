@@ -64,7 +64,7 @@ onBeforeUnmount(() => controller?.abort())
 </script>
 
 <template>
-  <section>
+  <v-sheet tag="section" color="transparent">
     <v-btn :to="{ name: 'products' }" variant="text" prepend-icon="mdi-arrow-left" class="mb-4">Voltar para produtos</v-btn>
 
     <v-row v-if="loading" aria-busy="true" aria-label="Carregando produto">
@@ -121,5 +121,5 @@ onBeforeUnmount(() => controller?.abort())
       :loading="deleting"
       @confirm="remove"
     />
-  </section>
+  </v-sheet>
 </template>

@@ -31,7 +31,7 @@ watch(() => state.value.name, (name) => {
 </script>
 
 <template>
-  <section>
+  <v-sheet tag="section" color="transparent">
     <h1 class="page-title mb-6">Histórico de alterações</h1>
 
     <v-card variant="flat" border class="pa-4 mb-6">
@@ -110,5 +110,5 @@ watch(() => state.value.name, (name) => {
       @page="apply({ page: $event })"
       @per-page="apply({ per_page: $event })"
     />
-  </section>
+  </v-sheet>
 </template>

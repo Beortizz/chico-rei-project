@@ -61,7 +61,7 @@ onMounted(loadProduct)
 </script>
 
 <template>
-  <section style="max-width: 760px">
+  <v-sheet tag="section" color="transparent" max-width="760" class="mx-auto d-flex flex-column ga-6">
     <h1 class="page-title mb-6">{{ isEditing ? 'Editar produto' : 'Novo produto' }}</h1>
 
     <v-skeleton-loader v-if="loading" type="text, text, text, paragraph" aria-busy="true" />
@@ -77,5 +77,5 @@ onMounted(loadProduct)
     </StateMessage>
 
     <ProductForm v-else :product="product" :submitting="submitting" :server-errors="serverErrors" @submit="save" @cancel="cancel" />
-  </section>
+  </v-sheet>
 </template>

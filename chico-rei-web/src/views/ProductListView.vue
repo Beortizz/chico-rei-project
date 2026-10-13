@@ -50,7 +50,7 @@ async function confirmDelete(): Promise<void> {
 </script>
 
 <template>
-  <section>
+  <v-sheet tag="section" color="transparent">
     <div class="d-flex flex-column flex-sm-row align-sm-center justify-space-between ga-3 mb-6">
       <h1 class="page-title">Produtos</h1>
       <v-btn v-if="auth.isAuthenticated" :to="{ name: 'product-create' }" color="primary" variant="flat" prepend-icon="mdi-plus">
@@ -104,5 +104,5 @@ async function confirmDelete(): Promise<void> {
       @update:model-value="productToDelete = null"
       @confirm="confirmDelete"
     />
-  </section>
+  </v-sheet>
 </template>

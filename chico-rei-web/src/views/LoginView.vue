@@ -44,7 +44,7 @@ async function submit(): Promise<void> {
 </script>
 
 <template>
-  <section class="d-flex justify-center">
+  <v-sheet tag="section" color="transparent" class="d-flex justify-center">
     <v-card variant="flat" border class="pa-6 w-100" style="max-width: 420px">
       <h1 class="page-title mb-1">Entrar</h1>
       <p class="text-body-2 text-secondary mb-6">Acesse para cadastrar e gerenciar produtos.</p>
@@ -75,5 +75,5 @@ async function submit(): Promise<void> {
         <v-btn type="submit" color="primary" variant="flat" block size="large" :loading="submitting" class="mt-2">Entrar</v-btn>
       </v-form>
     </v-card>
-  </section>
+  </v-sheet>
 </template>
