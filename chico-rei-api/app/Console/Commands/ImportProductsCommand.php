@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 #[Signature('products:import {limit?}')]
-#[Description('Command description')]
+#[Description('Importa produtos da Fake Store API')]
 class ImportProductsCommand extends Command
 {
     const string FAKE_STORE_URL = "https://fakestoreapi.com";
@@ -21,30 +21,29 @@ class ImportProductsCommand extends Command
      */
     public function handle()
     {
-        if(!$this->argument('limit') || $this->argument('limit') > $this->maxLimit) {
+        $limit = (int) $this->argument('limit');
+
+        if ($limit < 1 || $limit > $this->maxLimit) {
             $this->info("Limit is required and must be less than or equal to {$this->maxLimit}. Defaulting to {$this->defaultLimit}.");
-            $this->argument('limit', $this->defaultLimit);
+            $limit = $this->defaultLimit;
         }
 
         $this->info("Importing products...");
         try {
             $response = Http::get(self::FAKE_STORE_URL . '/products', [
-                'limit' => $this->argument('limit')
+                'limit' => $limit
             ])->throw()->json();
 
             $this->info("Products imported successfully.");
             foreach ($response as $product) {
-                Product::updateOrCreate(
-                    ['id' => $product['id']],
-                    [
-                        'name' => trim($product['title'])   ,
-                        'description' => $product['description'],
-                        'image' => $product['image'],
-                        'price' => $product['price'],
-                        'category' => $product['category'],
-                        'stock' => rand(0, 100),
-                    ]
-                );
+                Product::create([
+                    'name' => trim($product['title']),
+                    'description' => $product['description'],
+                    'image' => $product['image'],
+                    'price' => $product['price'],
+                    'category' => $product['category'],
+                    'stock' => rand(0, 100),
+                ]);
             }
             return CommandAlias::SUCCESS;
 
