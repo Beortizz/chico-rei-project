@@ -19,9 +19,6 @@ export function isCanceled(error: unknown): boolean {
   return axios.isCancel(error)
 }
 
-/**
- * Converte qualquer falha de requisição no formato único usado pela interface, em português.
- */
 export function normalizeError(error: unknown): NormalizedError {
   if (!axios.isAxiosError<ApiErrorBody>(error)) {
     return { message: 'Ocorreu um erro inesperado.', status: null, fieldErrors: {} }
