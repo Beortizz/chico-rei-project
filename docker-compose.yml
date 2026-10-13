@@ -16,6 +16,23 @@ services:
       timeout: 5s
       retries: 20
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.0
+    environment:
+      discovery.type: single-node
+      # Segurança desligada: uso apenas em desenvolvimento local.
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -qE '\"status\":\"(green|yellow)\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
   api:
     build: ./chico-rei-api
     # Instala dependências caso o volume do código esconda o vendor da imagem.
@@ -32,11 +49,33 @@ services:
       DB_DATABASE: ${DB_DATABASE:-chico_rei}
       DB_USERNAME: ${DB_USERNAME:-chico_rei}
       DB_PASSWORD: ${DB_PASSWORD:-secret}
+      ELASTICSEARCH_HOST: http://elasticsearch:9200
     volumes:
       - ./chico-rei-api:/var/www/html
     depends_on:
       mysql:
         condition: service_healthy
+
+  queue:
+    build: ./chico-rei-api
+    # --tries/--timeout aqui são só o padrão; cada job pode definir os seus.
+    command: php artisan queue:work --sleep=3 --tries=3 --timeout=60
+    restart: unless-stopped
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-chico_rei}
+      DB_USERNAME: ${DB_USERNAME:-chico_rei}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      ELASTICSEARCH_HOST: http://elasticsearch:9200
+    volumes:
+      - ./chico-rei-api:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+      api:
+        condition: service_started
 
   web:
     build: ./chico-rei-web
@@ -53,4 +92,5 @@ services:
 
 volumes:
   mysql-data:
+  elasticsearch-data:
   web-node-modules:
