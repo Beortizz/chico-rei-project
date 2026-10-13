@@ -135,6 +135,7 @@ O modelo está em `chico-rei-api/.env.example`. No Docker, as variáveis de banc
 |---|---|---|
 | `APP_KEY` | vazio | Gerada com `php artisan key:generate` |
 | `APP_URL` | `http://localhost:8000` | Base das URLs públicas das imagens |
+| `APP_LOCALE` | `pt_BR` | Idioma das mensagens de validação (arquivos em `lang/pt_BR`) |
 | `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | `mysql`, `3306`, `chico_rei`, `chico_rei`, `secret` | MySQL (`DB_HOST=127.0.0.1` fora do Docker) |
 | `SESSION_DRIVER`, `CACHE_STORE`, `QUEUE_CONNECTION` | `database` | Sessão, cache e fila ficam no MySQL |
 | `SANCTUM_STATEFUL_DOMAINS` | `localhost:5173` | Origem do front (login por cookie) |

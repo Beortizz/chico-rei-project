@@ -29,6 +29,16 @@ class ProductListingTest extends TestCase
             ->assertJsonValidationErrors('per_page');
     }
 
+    public function test_validation_messages_are_in_portuguese(): void
+    {
+        config(['app.locale' => 'pt_BR']);
+
+        $this->getJson('/api/products?per_page=1000&min_price=100&max_price=10')
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.max_price.0', 'O campo preço máximo deve ser maior ou igual a 100.')
+            ->assertJsonPath('errors.per_page.0', 'O campo itens por página não pode conter um valor superior a 100.');
+    }
+
     public function test_it_filters_by_category(): void
     {
         Product::factory()->create(['category' => 'Camisetas']);
