@@ -10,7 +10,7 @@ const notifications = useNotificationsStore()
     <AppHeader />
 
     <v-main>
-      <v-container class="py-8" style="max-width: 1280px">
+      <v-container class="py-8" max-width="1280">
         <router-view />
       </v-container>
     </v-main>

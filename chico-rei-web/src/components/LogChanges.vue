@@ -41,7 +41,7 @@ const snapshot = computed(() => {
 </script>
 
 <template>
-  <ul v-if="log.action === 'updated'" class="pl-0" style="list-style: none">
+  <ul v-if="log.action === 'updated'" class="pl-0 list-unstyled">
     <li v-for="change in changes" :key="change.label" class="text-body-2">
       <span class="font-weight-medium">{{ change.label }}:</span>
       <span class="text-secondary text-decoration-line-through mx-1">{{ change.before }}</span>

@@ -25,7 +25,7 @@ async function logout(): Promise<void> {
     <v-app-bar-nav-icon v-if="smAndDown" aria-label="Abrir menu" @click="drawer = !drawer" />
 
     <v-app-bar-title>
-      <router-link :to="{ name: 'products' }" class="text-decoration-none text-primary font-weight-black text-uppercase" style="letter-spacing: 0.08em">
+      <router-link :to="{ name: 'products' }" class="text-decoration-none text-primary font-weight-black text-uppercase letter-spaced">
         Chico Rei
       </router-link>
     </v-app-bar-title>

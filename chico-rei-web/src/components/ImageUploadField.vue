@@ -55,12 +55,12 @@ function clearSelection(): void {
     <div class="text-body-2 font-weight-medium mb-2">Imagem</div>
 
     <div class="d-flex flex-column flex-sm-row ga-4 align-start">
-      <div class="bg-grey-lighten-4 rounded-lg overflow-hidden flex-shrink-0" style="width: 160px; height: 160px">
+      <v-sheet color="grey-lighten-4" rounded="lg" width="160" height="160" class="overflow-hidden flex-shrink-0">
         <v-img v-if="displayedImage" :src="displayedImage" alt="Pré-visualização da imagem do produto" cover height="160" />
         <div v-else class="d-flex align-center justify-center fill-height">
           <v-icon icon="mdi-image-outline" size="40" color="grey" />
         </div>
-      </div>
+      </v-sheet>
 
       <div class="d-flex flex-column ga-2 align-start">
         <input ref="input" type="file" accept="image/jpeg,image/png,image/webp" hidden @change="onPick" />

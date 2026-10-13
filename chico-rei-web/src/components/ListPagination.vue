@@ -35,7 +35,7 @@ const summary = computed(() =>
       label="Por página"
       density="compact"
       hide-details
-      style="max-width: 130px"
+      max-width="130"
       @update:model-value="emit('perPage', $event)"
     />
   </div>

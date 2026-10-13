@@ -85,9 +85,11 @@ onBeforeUnmount(() => controller?.abort())
     <v-row v-else-if="product">
       <v-col cols="12" md="6">
         <v-img v-if="product.image" :src="product.image" :alt="product.name" :aspect-ratio="1" cover class="rounded-lg bg-grey-lighten-4" />
-        <div v-else class="d-flex align-center justify-center bg-grey-lighten-4 rounded-lg" style="aspect-ratio: 1">
-          <v-icon icon="mdi-image-off-outline" size="72" color="grey" />
-        </div>
+        <v-responsive v-else :aspect-ratio="1" class="bg-grey-lighten-4 rounded-lg">
+          <div class="d-flex align-center justify-center fill-height">
+            <v-icon icon="mdi-image-off-outline" size="72" color="grey" />
+          </div>
+        </v-responsive>
       </v-col>
 
       <v-col cols="12" md="6" class="d-flex flex-column ga-3">
@@ -101,7 +103,7 @@ onBeforeUnmount(() => controller?.abort())
           </v-chip>
         </div>
 
-        <p v-if="product.description" class="text-body-1" style="white-space: pre-line">{{ product.description }}</p>
+        <p v-if="product.description" class="text-body-1 text-pre-line">{{ product.description }}</p>
         <p v-else class="text-body-2 text-secondary">Este produto não possui descrição.</p>
 
         <p class="text-caption text-secondary mt-2">Atualizado em {{ formatDateTime(product.updated_at) }}</p>

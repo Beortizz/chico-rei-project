@@ -24,22 +24,19 @@ const stockLabel = computed(() => {
   <v-card :to="{ name: 'product-detail', params: { id: product.id } }" variant="flat" border class="h-100 d-flex flex-column">
     <div class="position-relative">
       <v-img v-if="product.image" :src="product.image" :alt="product.name" :aspect-ratio="1" cover class="bg-grey-lighten-4" />
-      <div v-else class="d-flex align-center justify-center bg-grey-lighten-4" style="aspect-ratio: 1">
-        <v-icon icon="mdi-image-off-outline" size="48" color="grey" />
+      <v-responsive v-else :aspect-ratio="1" class="bg-grey-lighten-4">
+        <div class="d-flex align-center justify-center fill-height">
+          <v-icon icon="mdi-image-off-outline" size="48" color="grey" />
+        </div>
+      </v-responsive>
+
+      <div v-if="stockLabel" class="position-absolute top-0 left-0 pa-2">
+        <v-chip :color="product.stock === 0 ? 'primary' : 'accent'" size="small" label>
+          {{ stockLabel }}
+        </v-chip>
       </div>
 
-      <v-chip
-        v-if="stockLabel"
-        :color="product.stock === 0 ? 'primary' : 'accent'"
-        size="small"
-        label
-        class="position-absolute"
-        style="top: 8px; left: 8px"
-      >
-        {{ stockLabel }}
-      </v-chip>
-
-      <div v-if="canManage" class="position-absolute d-flex ga-1" style="top: 8px; right: 8px">
+      <div v-if="canManage" class="position-absolute top-0 right-0 pa-2 d-flex ga-1">
         <v-btn
           icon="mdi-pencil"
           size="small"

@@ -45,7 +45,7 @@ async function submit(): Promise<void> {
 
 <template>
   <v-sheet tag="section" color="transparent" class="d-flex justify-center">
-    <v-card variant="flat" border class="pa-6 w-100" style="max-width: 420px">
+    <v-card variant="flat" border class="pa-6 w-100" max-width="420">
       <h1 class="page-title mb-1">Entrar</h1>
       <p class="text-body-2 text-secondary mb-6">Acesse para cadastrar e gerenciar produtos.</p>
 

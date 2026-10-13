@@ -70,7 +70,7 @@ async function confirmDelete(): Promise<void> {
         label="Ordenar por"
         density="compact"
         hide-details
-        style="max-width: 220px"
+        max-width="220"
         @update:model-value="apply({ sort: $event })"
       />
     </div>

@@ -20,3 +20,11 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.letter-spaced {
+  letter-spacing: 0.08em;
+}
+
+.list-unstyled {
+  list-style: none;
+}
