@@ -33,5 +33,5 @@ http.interceptors.response.use(
  * O Sanctum exige o cookie XSRF antes de qualquer requisição que altere estado em modo SPA.
  */
 export function ensureCsrfCookie(): Promise<unknown> {
-  return axios.get(`${new URL(apiUrl).origin}/sanctum/csrf-cookie`, { withCredentials: true })
+  return axios.get(`${new URL(apiUrl, window.location.origin).origin}/sanctum/csrf-cookie`, { withCredentials: true })
 }
