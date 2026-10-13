@@ -14,6 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+
+        $trustedProxies = env('TRUSTED_PROXIES');
+
+        if ($trustedProxies) {
+            $middleware->trustProxies(at: $trustedProxies === '*' ? '*' : explode(',', $trustedProxies));
+        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(ApiErrorResponse::render(...));
