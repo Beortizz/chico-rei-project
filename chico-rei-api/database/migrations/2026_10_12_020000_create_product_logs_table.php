@@ -8,15 +8,16 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * Sem foreign key em product_id: o log precisa sobreviver à exclusão do produto.
+     * user_id é nulo quando a ação não vem de um usuário autenticado (seeder, importação).
      */
     public function up(): void
     {
         Schema::create('product_logs', function (Blueprint $table) {
             $table->id();
-            // Sem foreign key: o log precisa sobreviver à exclusão do produto.
             $table->unsignedBigInteger('product_id')->index();
             $table->string('product_name');
-            // Nulo quando a ação não vem de um usuário autenticado (seeder, importação).
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('action', 20)->index();
             $table->json('old_values')->nullable();
