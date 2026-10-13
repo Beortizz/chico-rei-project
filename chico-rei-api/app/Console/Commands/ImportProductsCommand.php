@@ -34,17 +34,26 @@ class ImportProductsCommand extends Command
                 'limit' => $limit
             ])->throw()->json();
 
-            $this->info("Products imported successfully.");
+            $created = 0;
+            $skipped = 0;
             foreach ($response as $product) {
-                Product::create([
+                $importedProduct = Product::firstOrCreate([
                     'name' => trim($product['title']),
+                    'category' => $product['category'],
+                ], [
                     'description' => $product['description'],
                     'image' => $product['image'],
                     'price' => $product['price'],
-                    'category' => $product['category'],
                     'stock' => rand(0, 100),
                 ]);
+
+                if ($importedProduct->wasRecentlyCreated) {
+                    $created++;
+                } else {
+                    $skipped++;
+                }
             }
+            $this->info("Import finished: {$created} created, {$skipped} skipped (already existed).");
             return CommandAlias::SUCCESS;
 
         } catch (\Exception $e) {
