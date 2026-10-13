@@ -1,0 +1,22 @@
+{
+	{$CADDY_GLOBAL_OPTIONS}
+	frankenphp
+}
+
+{$SERVER_NAME::80} {
+	encode zstd br gzip
+
+	@laravel path /api/* /sanctum/* /storage/* /up
+	handle @laravel {
+		root * /app/public
+		php_server
+	}
+
+	handle {
+		root * /srv/web
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+}
