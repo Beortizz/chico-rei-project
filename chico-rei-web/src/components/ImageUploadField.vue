@@ -52,7 +52,7 @@ function clearSelection(): void {
 
 <template>
   <div>
-    <div class="text-body-2 font-weight-medium mb-2">Imagem</div>
+    <div class="text-body-medium font-weight-medium mb-2">Imagem</div>
 
     <div class="d-flex flex-column flex-sm-row ga-4 align-start">
       <v-sheet color="grey-lighten-4" rounded="lg" width="160" height="160" class="overflow-hidden flex-shrink-0">
@@ -82,8 +82,8 @@ function clearSelection(): void {
           Desfazer remoção
         </v-btn>
 
-        <span class="text-caption text-secondary">JPG, PNG ou WebP, até 2 MB.</span>
-        <span v-if="error" class="text-caption text-error" role="alert">{{ error }}</span>
+        <span class="text-body-small text-secondary">JPG, PNG ou WebP, até 2 MB.</span>
+        <span v-if="error" class="text-body-small text-error" role="alert">{{ error }}</span>
       </div>
     </div>
   </div>

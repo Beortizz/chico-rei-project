@@ -61,7 +61,7 @@ async function confirmDelete(): Promise<void> {
     <ProductFilters :model-value="state" @apply="apply" @clear="clearFilters" />
 
     <div class="d-flex align-center justify-space-between ga-3 my-5">
-      <span class="text-body-2 text-secondary" aria-live="polite">
+      <span class="text-body-medium text-secondary" aria-live="polite">
         <template v-if="meta && !loading">{{ meta.total }} {{ meta.total === 1 ? 'produto' : 'produtos' }}</template>
       </span>
       <v-select

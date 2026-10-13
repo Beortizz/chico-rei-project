@@ -17,7 +17,7 @@ const summary = computed(() =>
 
 <template>
   <div class="d-flex flex-column flex-sm-row align-center justify-space-between ga-3 mt-6">
-    <span class="text-body-2 text-secondary">{{ summary }}</span>
+    <span class="text-body-medium text-secondary">{{ summary }}</span>
 
     <v-pagination
       v-if="meta.last_page > 1"

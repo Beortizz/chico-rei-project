@@ -47,7 +47,7 @@ async function submit(): Promise<void> {
   <v-sheet tag="section" color="transparent" class="d-flex justify-center">
     <v-card variant="flat" border class="pa-6 w-100" max-width="420">
       <h1 class="page-title mb-1">Entrar</h1>
-      <p class="text-body-2 text-secondary mb-6">Acesse para cadastrar e gerenciar produtos.</p>
+      <p class="text-body-medium text-secondary mb-6">Acesse para cadastrar e gerenciar produtos.</p>
 
       <v-alert v-if="errorMessage" type="error" variant="tonal" density="comfortable" class="mb-4" role="alert">
         {{ errorMessage }}

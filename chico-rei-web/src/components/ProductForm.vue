@@ -100,11 +100,11 @@ async function submit(): Promise<void> {
 
       <v-col cols="12">
         <ImageUploadField v-model:file="values.image" v-model:remove="values.removeImage" :current-url="product?.image ?? null" />
-        <div v-for="message in serverErrors.image" :key="message" class="text-caption text-error mt-1" role="alert">{{ message }}</div>
+        <div v-for="message in serverErrors.image" :key="message" class="text-body-small text-error mt-1" role="alert">{{ message }}</div>
       </v-col>
     </v-row>
 
-    <p class="text-caption text-secondary mt-2">* Campos obrigatórios</p>
+    <p class="text-body-small text-secondary mt-2">* Campos obrigatórios</p>
 
     <div class="d-flex justify-end ga-2 mt-4">
       <v-btn variant="text" :disabled="submitting" @click="emit('cancel')">Cancelar</v-btn>

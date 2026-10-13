@@ -93,9 +93,9 @@ onBeforeUnmount(() => controller?.abort())
       </v-col>
 
       <v-col cols="12" md="6" class="d-flex flex-column ga-3">
-        <span class="text-caption text-secondary text-uppercase">{{ product.category }}</span>
+        <span class="text-body-small text-secondary text-uppercase">{{ product.category }}</span>
         <h1 class="page-title">{{ product.name }}</h1>
-        <span class="text-h4 font-weight-bold">{{ formatPrice(product.price) }}</span>
+        <span class="text-headline-medium font-weight-bold">{{ formatPrice(product.price) }}</span>
 
         <div>
           <v-chip :color="product.in_stock ? 'success' : 'primary'" label size="small">
@@ -103,10 +103,10 @@ onBeforeUnmount(() => controller?.abort())
           </v-chip>
         </div>
 
-        <p v-if="product.description" class="text-body-1 text-pre-line">{{ product.description }}</p>
-        <p v-else class="text-body-2 text-secondary">Este produto não possui descrição.</p>
+        <p v-if="product.description" class="text-body-large text-pre-line">{{ product.description }}</p>
+        <p v-else class="text-body-medium text-secondary">Este produto não possui descrição.</p>
 
-        <p class="text-caption text-secondary mt-2">Atualizado em {{ formatDateTime(product.updated_at) }}</p>
+        <p class="text-body-small text-secondary mt-2">Atualizado em {{ formatDateTime(product.updated_at) }}</p>
 
         <div v-if="auth.isAuthenticated" class="d-flex flex-wrap ga-2 mt-4">
           <v-btn :to="{ name: 'product-edit', params: { id: product.id } }" color="primary" variant="flat" prepend-icon="mdi-pencil">Editar</v-btn>

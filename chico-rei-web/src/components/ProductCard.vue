@@ -50,9 +50,9 @@ const stockLabel = computed(() => {
     </div>
 
     <v-card-text class="d-flex flex-column flex-grow-1 ga-1">
-      <span class="text-caption text-secondary text-uppercase">{{ product.category }}</span>
-      <h3 class="text-subtitle-1 font-weight-bold text-clamp-2">{{ product.name }}</h3>
-      <span class="text-h6 font-weight-bold mt-auto pt-2">{{ formatPrice(product.price) }}</span>
+      <span class="text-body-small text-secondary text-uppercase">{{ product.category }}</span>
+      <h3 class="text-title-medium font-weight-bold text-clamp-2">{{ product.name }}</h3>
+      <span class="text-title-large font-weight-bold mt-auto pt-2">{{ formatPrice(product.price) }}</span>
     </v-card-text>
   </v-card>
 </template>
