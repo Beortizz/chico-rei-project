@@ -1,53 +1,36 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
 import type { ProductLog } from '@/types/api'
-import { formatPrice } from '@/utils/format'
+import { getLogChanges, getLogSnapshot } from '@/utils/logChanges'
 
 const props = defineProps<{ log: ProductLog }>()
 
-const FIELD_LABELS: Record<string, string> = {
-  name: 'Nome',
-  description: 'Descrição',
-  image: 'Imagem',
-  price: 'Preço',
-  category: 'Categoria',
-  stock: 'Estoque',
-}
+const { lgAndUp, mdAndUp } = useDisplay()
+const maxWidth = computed(() => (lgAndUp.value ? 320 : mdAndUp.value ? 200 : 100))
 
-function display(field: string, value: unknown): string {
-  if (value === null || value === undefined || value === '') return '—'
-  if (field === 'price') return formatPrice(String(value))
+/**
+ * O resumo é uma linha truncada porque valores como a descrição podem ser arbitrariamente longos;
+ * o conteúdo completo fica no modal de detalhes. A largura acompanha a tela para a tabela nunca rolar.
+ */
+const summary = computed(() => {
+  if (props.log.action === 'updated') {
+    return getLogChanges(props.log)
+      .map((change) => (change.field === 'image'
+        ? `${change.label}: ${change.after === '—' ? 'removida' : 'alterada'}`
+        : `${change.label}: ${change.before} → ${change.after}`))
+      .join(' · ')
+  }
 
-  return String(value)
-}
-
-const changes = computed(() => {
-  const next = props.log.new_values ?? {}
-  const previous = props.log.old_values ?? {}
-
-  return Object.keys(next)
-    .filter((field) => field in FIELD_LABELS)
-    .map((field) => ({ label: FIELD_LABELS[field], before: display(field, previous[field]), after: display(field, next[field]) }))
-})
-
-const snapshot = computed(() => {
-  const values = props.log.action === 'deleted' ? props.log.old_values : props.log.new_values
-
-  return Object.keys(FIELD_LABELS)
-    .filter((field) => field !== 'description' && field !== 'image' && values && field in values)
-    .map((field) => `${FIELD_LABELS[field]}: ${display(field, values?.[field])}`)
+  return getLogSnapshot(props.log)
+    .filter((item) => item.field !== 'description' && item.field !== 'image')
+    .map((item) => `${item.label}: ${item.value}`)
     .join(' · ')
 })
 </script>
 
 <template>
-  <ul v-if="log.action === 'updated'" class="pl-0 list-unstyled">
-    <li v-for="change in changes" :key="change.label" class="text-body-2">
-      <span class="font-weight-medium">{{ change.label }}:</span>
-      <span class="text-secondary text-decoration-line-through mx-1">{{ change.before }}</span>
-      <v-icon icon="mdi-arrow-right" size="x-small" />
-      <span class="font-weight-medium ml-1">{{ change.after }}</span>
-    </li>
-  </ul>
-  <span v-else class="text-body-2 text-secondary">{{ snapshot }}</span>
+  <v-sheet color="transparent" :max-width="maxWidth" class="text-truncate text-body-medium text-secondary" :title="summary">
+    {{ summary }}
+  </v-sheet>
 </template>

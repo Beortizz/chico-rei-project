@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
+import { useDisplay } from 'vuetify'
 import ListPagination from '@/components/ListPagination.vue'
 import LogChanges from '@/components/LogChanges.vue'
+import LogDetailsDialog from '@/components/LogDetailsDialog.vue'
 import StateMessage from '@/components/StateMessage.vue'
 import { useRouteQueryList } from '@/composables/useRouteQueryList'
 import { listProductLogs } from '@/services/productLogs'
-import type { ProductLogAction } from '@/types/api'
+import type { ProductLog } from '@/types/api'
 import { formatDateTime } from '@/utils/format'
+import { LOG_ACTION_LABELS } from '@/utils/logChanges'
 import { LOG_ACTION_OPTIONS, LOG_PER_PAGE_OPTIONS, parseLogQuery, toLogApiParams, toLogRouteQuery } from '@/utils/logQuery'
-
-const ACTION_LABELS: Record<ProductLogAction, { text: string; color: string }> = {
-  created: { text: 'Criação', color: 'success' },
-  updated: { text: 'Atualização', color: 'info' },
-  deleted: { text: 'Exclusão', color: 'error' },
-}
 
 const { items: logs, meta, loading, error, state, apply, clearFilters, reload } = useRouteQueryList({
   routeName: 'product-logs',
@@ -22,6 +19,16 @@ const { items: logs, meta, loading, error, state, apply, clearFilters, reload } 
   toApiParams: toLogApiParams,
   fetch: listProductLogs,
 })
+
+const { xs, mdAndUp } = useDisplay()
+const productMaxWidth = computed(() => (xs.value ? 64 : mdAndUp.value ? 240 : 100))
+const selectedLog = ref<ProductLog | null>(null)
+const detailsOpen = ref(false)
+
+function showDetails(log: ProductLog) {
+  selectedLog.value = log
+  detailsOpen.value = true
+}
 
 const form = reactive({ name: state.value.name })
 
@@ -76,31 +83,46 @@ watch(() => state.value.name, (name) => {
       <v-table>
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Ação</th>
-            <th>Produto</th>
-            <th>Usuário</th>
-            <th>Alterações</th>
+            <th class="px-2 px-sm-3">Data</th>
+            <th class="px-2 px-sm-3">Ação</th>
+            <th class="px-2 px-sm-3">Produto</th>
+            <th class="px-2 px-sm-3 d-none d-md-table-cell">Usuário</th>
+            <th class="px-2 px-sm-3 d-none d-sm-table-cell">Alterações</th>
+            <th class="px-2 px-sm-3 text-end">Detalhes</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="log in logs" :key="log.id">
-            <td class="text-no-wrap">{{ formatDateTime(log.created_at) }}</td>
-            <td>
-              <v-chip :color="ACTION_LABELS[log.action].color" size="small" label>{{ ACTION_LABELS[log.action].text }}</v-chip>
+            <td class="px-2 px-sm-3">{{ formatDateTime(log.created_at) }}</td>
+            <td class="px-2 px-sm-3">
+              <v-chip :color="LOG_ACTION_LABELS[log.action].color" size="small" label>{{ LOG_ACTION_LABELS[log.action].text }}</v-chip>
             </td>
-            <td>
-              <router-link v-if="log.action !== 'deleted'" :to="{ name: 'product-detail', params: { id: log.product_id } }">
-                {{ log.product_name }}
-              </router-link>
-              <span v-else>{{ log.product_name }}</span>
+            <td class="px-2 px-sm-3">
+              <v-sheet color="transparent" :max-width="productMaxWidth" class="text-truncate" :title="log.product_name">
+                <router-link v-if="log.action !== 'deleted'" :to="{ name: 'product-detail', params: { id: log.product_id } }">
+                  {{ log.product_name }}
+                </router-link>
+                <span v-else>{{ log.product_name }}</span>
+              </v-sheet>
             </td>
-            <td>{{ log.user?.name ?? 'Sistema' }}</td>
-            <td class="py-2"><LogChanges :log="log" /></td>
+            <td class="px-2 px-sm-3 d-none d-md-table-cell">{{ log.user?.name ?? 'Sistema' }}</td>
+            <td class="px-2 px-sm-3 d-none d-sm-table-cell"><LogChanges :log="log" /></td>
+            <td class="px-2 px-sm-3 text-end">
+              <v-btn
+                icon="mdi-eye-outline"
+                size="small"
+                variant="text"
+                :aria-label="`Ver detalhes do registro de ${log.product_name}`"
+                title="Ver detalhes"
+                @click="showDetails(log)"
+              />
+            </td>
           </tr>
         </tbody>
       </v-table>
     </v-card>
+
+    <LogDetailsDialog v-model="detailsOpen" :log="selectedLog" />
 
     <ListPagination
       v-if="meta && !loading && !error"
