@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductSearchService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -21,9 +22,9 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ListProductsRequest $request)
+    public function index(ListProductsRequest $request, ProductSearchService $search)
     {
-        $filter = new ProductFilter($request->validated());
+        $filter = new ProductFilter($request->validated(), $search);
 
         $products = $filter->apply(Product::query())
             ->paginate($request->integer('per_page', 15))
