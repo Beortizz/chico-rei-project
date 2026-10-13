@@ -74,6 +74,14 @@ class ProductService
         $this->deleteImage($product->image);
     }
 
+    /**
+     * @return string[]
+     */
+    public function categories(): array
+    {
+        return Product::query()->distinct()->orderBy('category')->pluck('category')->all();
+    }
+
     public function imageUrl(?string $path): ?string
     {
         if ($path === null) {

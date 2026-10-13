@@ -33,6 +33,11 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
+    public function categories()
+    {
+        return response()->json(['data' => $this->productService->categories()]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
