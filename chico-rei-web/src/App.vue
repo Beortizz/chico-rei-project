@@ -1,47 +1,25 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import AppHeader from '@/components/AppHeader.vue'
+import { useNotificationsStore } from '@/stores/notifications'
+
+const notifications = useNotificationsStore()
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <v-app>
+    <AppHeader />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+    <v-main>
+      <v-container class="py-8" style="max-width: 1280px">
+        <router-view />
+      </v-container>
+    </v-main>
 
-  <main>
-    <TheWelcome />
-  </main>
+    <v-snackbar v-model="notifications.visible" :color="notifications.color" location="bottom" timeout="4000">
+      {{ notifications.message }}
+      <template #actions>
+        <v-btn variant="text" @click="notifications.visible = false">Fechar</v-btn>
+      </template>
+    </v-snackbar>
+  </v-app>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
