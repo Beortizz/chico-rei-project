@@ -4,9 +4,10 @@ namespace App\Observers;
 
 use App\Enums\ProductLogAction;
 use App\Jobs\IndexProductJob;
+use App\Jobs\LogProductChangeJob;
 use App\Jobs\RemoveProductFromIndexJob;
 use App\Models\Product;
-use App\Models\ProductLog;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 
 class ProductObserver
@@ -44,15 +45,22 @@ class ProductObserver
         RemoveProductFromIndexJob::dispatch($product->id);
     }
 
+    /**
+     * O usuário é capturado aqui porque o worker não tem sessão autenticada.
+     *
+     * @param  array<string, mixed>|null  $old
+     * @param  array<string, mixed>|null  $new
+     */
     private function log(Product $product, ProductLogAction $action, ?array $old, ?array $new): void
     {
-        ProductLog::create([
-            'product_id' => $product->id,
-            'product_name' => $product->name,
-            'user_id' => auth()->id(),
-            'action' => $action,
-            'old_values' => $old,
-            'new_values' => $new,
-        ]);
+        LogProductChangeJob::dispatch(
+            $product->id,
+            $product->name,
+            auth()->id(),
+            $action,
+            $old,
+            $new,
+            CarbonImmutable::now(),
+        );
     }
 }
