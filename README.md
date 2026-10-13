@@ -121,7 +121,7 @@ São 56 testes (PHPUnit) de autenticação, CRUD, filtros, busca com fallback, u
 
 ### Importação de produtos (opcional)
 
-`php artisan products:import {limit?}` busca produtos da [Fake Store API](https://fakestoreapi.com/products) e **cria um registro novo para cada item**, com id próprio, sem alterar os produtos que já existem. Em cada execução, os produtos são importados novamente.
+`php artisan products:import {limit?}` busca produtos da [Fake Store API](https://fakestoreapi.com/products) e **cria um registro novo para cada item**, com id próprio. Um produto que já exista com o mesmo nome e categoria **não é importado de novo** (é mantido como está).
 
 - Mapeamento: `title` → `name`; `description`, `image`, `price` e `category` são copiados como vêm.
 - A origem não tem estoque, então `stock` recebe um valor aleatório entre 0 e 100.
