@@ -42,12 +42,13 @@ async function submit(): Promise<void> {
 </script>
 
 <template>
-  <v-form ref="formRef" validate-on="blur lazy" @submit.prevent="submit" class="d-flex justify-content-center">
+  <v-form ref="formRef" validate-on="blur lazy" @submit.prevent="submit">
     <v-row>
       <v-col cols="12">
         <v-text-field
           v-model="values.name"
-          label="Nome"
+          label="Nome *"
+          aria-required="true"
           :rules="[required('Informe o nome do produto.'), maxLength]"
           :error-messages="serverErrors.name"
           counter="255"
@@ -57,7 +58,8 @@ async function submit(): Promise<void> {
       <v-col cols="12" sm="6">
         <v-text-field
           v-model="values.category"
-          label="Categoria"
+          label="Categoria *"
+          aria-required="true"
           :rules="[required('Informe a categoria.'), maxLength]"
           :error-messages="serverErrors.category"
         />
@@ -66,7 +68,8 @@ async function submit(): Promise<void> {
       <v-col cols="6" sm="3">
         <v-text-field
           v-model="values.price"
-          label="Preço"
+          label="Preço *"
+          aria-required="true"
           prefix="R$"
           inputmode="decimal"
           :rules="[validPrice]"
@@ -77,7 +80,8 @@ async function submit(): Promise<void> {
       <v-col cols="6" sm="3">
         <v-text-field
           v-model="values.stock"
-          label="Estoque"
+          label="Estoque *"
+          aria-required="true"
           inputmode="numeric"
           :rules="[validStock]"
           :error-messages="serverErrors.stock"
@@ -99,6 +103,8 @@ async function submit(): Promise<void> {
         <div v-for="message in serverErrors.image" :key="message" class="text-caption text-error mt-1" role="alert">{{ message }}</div>
       </v-col>
     </v-row>
+
+    <p class="text-caption text-secondary mt-2">* Campos obrigatórios</p>
 
     <div class="d-flex justify-end ga-2 mt-4">
       <v-btn variant="text" :disabled="submitting" @click="emit('cancel')">Cancelar</v-btn>
