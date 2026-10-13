@@ -22,7 +22,7 @@ class ListProductsRequest extends FormRequest
             'name' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
             'min_price' => ['nullable', 'numeric', 'min:0'],
-            'max_price' => ['nullable', 'numeric', 'min:0', 'gte:min_price'],
+            'max_price' => ['nullable', 'numeric', 'min:0', Rule::when($this->filled('min_price'), 'gte:min_price')],
             'in_stock' => ['nullable', 'boolean'],
             'sort' => ['nullable', Rule::in(ProductFilter::SORTABLE)],
             'direction' => ['nullable', Rule::in(['asc', 'desc'])],
