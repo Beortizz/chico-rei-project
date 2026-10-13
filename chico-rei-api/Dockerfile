@@ -8,6 +8,10 @@ RUN apt-get update \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# O servidor embutido do PHP roda em modo CLI, onde o OPcache vem desligado.
+RUN printf 'opcache.enable_cli=1\nopcache.validate_timestamps=1\nopcache.revalidate_freq=2\nopcache.memory_consumption=128\nopcache.max_accelerated_files=20000\n' \
+    > /usr/local/etc/php/conf.d/opcache.ini
+
 WORKDIR /var/www/html
 
 # Dependências antes do código para aproveitar o cache de camadas.
