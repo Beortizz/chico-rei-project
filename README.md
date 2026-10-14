@@ -1,5 +1,7 @@
 # Chico Rei Store
 
+![Status](https://status.laravieira.me/api/badge/59/status)
+
 **Site:** https://chico-rei.beortizz.com
 
 Teste técnico Full Stack: uma API em **Laravel** e um sistema web em **Vue.js** que a consome, do login ao CRUD de produtos.
