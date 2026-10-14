@@ -1,5 +1,7 @@
 # Chico Rei Store
 
+**Site:** https://chico-rei.beortizz.com
+
 Teste técnico Full Stack: uma API em **Laravel** e um sistema web em **Vue.js** que a consome, do login ao CRUD de produtos.
 
 Listagem pública (busca, filtros, ordenação e paginação), página de detalhe e área restrita a usuários autenticados para criar, editar e excluir produtos, com histórico de auditoria.
