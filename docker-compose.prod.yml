@@ -1,5 +1,9 @@
 name: store-prod
 
+x-app-build: &app-build
+  context: .
+  dockerfile: docker/prod/Dockerfile
+
 x-app-environment: &app-environment
   APP_ENV: production
   APP_DEBUG: "false"
@@ -26,9 +30,7 @@ x-app-environment: &app-environment
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: docker/prod/Dockerfile
+    build: *app-build
     image: store-app:latest
     restart: unless-stopped
     environment:
@@ -47,6 +49,7 @@ services:
       start_period: 60s
 
   queue:
+    build: *app-build
     image: store-app:latest
     restart: unless-stopped
     command: php artisan queue:work --sleep=3 --tries=3 --timeout=60 --max-time=3600
